@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet,Image , TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Assuming you're using Expo for icons
 
 // Header component accepting props for dynamic behavior
@@ -9,7 +9,7 @@ export default function OrderStatusHeader({ showBackButton, onBackPress, onChatP
       {/* Conditional rendering for back button */}
       {showBackButton && (
         <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
-          <Ionicons name="chevron-back" size={24} color="black" />
+          <Image source={require("./../assets/goBack.png")} style={styles.icon} />
         </TouchableOpacity>
       )}
       
@@ -47,9 +47,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backButton: {
-    position: 'absolute',
-    left: 10,
-    zIndex: 10,
+    backgroundColor: "#fff",
+    marginLeft: 3,
   },
   chatButton: {
     backgroundColor: '#000',
@@ -60,5 +59,9 @@ const styles = StyleSheet.create({
   chatButtonText: {
     color: '#fff',
     fontSize: 14,
+  },
+  icon: {
+    width: 20,
+    height: 20,
   },
 });

@@ -11,8 +11,10 @@ import {
 import MapView, { Marker } from "react-native-maps"; // Use this for showing the map
 import MapViewDirections from "react-native-maps-directions";
 import OrderStatusHeader from "./../component/OrderStatusHeader"; // Import the header component
+import { useNavigation } from "@react-navigation/native"; // Import navigation hook
 
 export default function OrderStatus() {
+  const navigation = useNavigation(); // Use the navigation hook
   const [status, setStatus] = useState("searching"); // Change the status to render different UIs
   const [modalVisible, setModalVisible] = useState(false); // For controlling the modal visibility
 
@@ -39,14 +41,18 @@ export default function OrderStatus() {
   // Function for handling back button press
   const handleBackPress = () => {
     console.log("Back button pressed");
-    // Logic for back navigation
+    navigation.goBack();
   };
 
   // Function for handling chat button press
   const handleChatPress = () => {
     console.log("Chat with admin button pressed");
-    // Logic for opening the chat
+    navigation.navigate("ChatScreen"); // Navigate to the ChatScreen
   };
+
+  // Condition to render Chat button only for specific statuses
+  const showChatButton = status !== "searching" && status !== "completed";
+
 
   const renderStatusContent = () => {
     switch (status) {
@@ -64,15 +70,15 @@ export default function OrderStatus() {
               />
               <Image
                 source={require("./../assets/food.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
               <Image
                 source={require("./../assets/walk.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
               <Image
                 source={require("./../assets/checked.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
             </View>
             <Text style={styles.orderId}>รายการสั่งซื้อ {order.orderId}</Text>
@@ -92,7 +98,7 @@ export default function OrderStatus() {
             <View style={styles.iconsContainer}>
               <Image
                 source={require("./../assets/binoculars.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
               <Image
                 source={require("./../assets/food.png")}
@@ -100,17 +106,26 @@ export default function OrderStatus() {
               />
               <Image
                 source={require("./../assets/walk.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
               <Image
                 source={require("./../assets/checked.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
             </View>
             <Text style={styles.orderId}>รายการสั่งซื้อ {order.orderId}</Text>
-            <Text style={styles.walkerName}>Walker: {order.walker.name}</Text>
-            <TouchableOpacity style={styles.chatButton}>
-              <Text style={styles.chatButtonText}>แชทกับ ผู้จัดส่ง</Text>
+            <View style={styles.walkerInfoContainer}>
+              {/* Walker's Image */}
+              <Image
+                source={require("./../assets/food.png")} // Use the actual path or URL of the image here
+                style={styles.walkerImage}
+              />
+
+              {/* Walker's Name */}
+              <Text style={styles.walkerName}>Walker: {order.walker.name}</Text>
+            </View>
+            <TouchableOpacity style={styles.ChatWalkerButton} onPress={() => {handleChatPress();}}>
+              <Text style={styles.ChatWalkerButtonText}>Chat with Walker</Text>
             </TouchableOpacity>
           </View>
         );
@@ -132,8 +147,6 @@ export default function OrderStatus() {
                 description="Starting Point"
                 pinColor="green" // Change the color of the marker
               />
-
-              {/* Customized Marker for destination with decreased size */}
               <Marker
                 coordinate={destination}
                 title="Destination"
@@ -156,11 +169,11 @@ export default function OrderStatus() {
             <View style={styles.iconsContainer}>
               <Image
                 source={require("./../assets/binoculars.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
               <Image
                 source={require("./../assets/food.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
               <Image
                 source={require("./../assets/walk.png")}
@@ -168,13 +181,22 @@ export default function OrderStatus() {
               />
               <Image
                 source={require("./../assets/checked.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
             </View>
             <Text style={styles.orderId}>รายการสั่งซื้อ {order.orderId}</Text>
-            <Text style={styles.walkerName}>Walker: {order.walker.name}</Text>
-            <TouchableOpacity style={styles.chatButton}>
-              <Text style={styles.chatButtonText}>แชทกับ ผู้จัดส่ง</Text>
+            <View style={styles.walkerInfoContainer}>
+              {/* Walker's Image */}
+              <Image
+                source={require("./../assets/food.png")} // Use the actual path or URL of the image here
+                style={styles.walkerImage}
+              />
+
+              {/* Walker's Name */}
+              <Text style={styles.walkerName}>Walker: {order.walker.name}</Text>
+            </View>
+            <TouchableOpacity style={styles.ChatWalkerButton} onPress={() => {handleChatPress();}}>
+              <Text style={styles.ChatWalkerButtonText}>Chat with Walker</Text>
             </TouchableOpacity>
           </View>
         );
@@ -186,15 +208,15 @@ export default function OrderStatus() {
             <View style={styles.iconsContainer}>
               <Image
                 source={require("./../assets/binoculars.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
               <Image
                 source={require("./../assets/food.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
               <Image
                 source={require("./../assets/walk.png")}
-                style={styles.icon}
+                style={[styles.icon, { opacity: 0.1 }]}
               />
               <Image
                 source={require("./../assets/checked.png")}
@@ -202,12 +224,21 @@ export default function OrderStatus() {
               />
             </View>
             <Text style={styles.orderId}>รายการสั่งซื้อ {order.orderId}</Text>
-            <Text style={styles.walkerName}>Walker: {order.walker.name}</Text>
+            <View style={styles.walkerInfoContainer}>
+              {/* Walker's Image */}
+              <Image
+                source={require("./../assets/food.png")} // Use the actual path or URL of the image here
+                style={styles.walkerImage}
+              />
+
+              {/* Walker's Name */}
+              <Text style={styles.walkerName}>Walker: {order.walker.name}</Text>
+            </View>
             <TouchableOpacity style={styles.reviewButton}>
-              <Text style={styles.reviewButtonText}>รีวิว</Text>
+              <Text style={styles.reviewButtonText}>review</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.reportButton}>
-              <Text style={styles.reportButtonText}>รายงาน</Text>
+              <Text style={styles.reportButtonText}>report</Text>
             </TouchableOpacity>
           </View>
         );
@@ -222,56 +253,55 @@ export default function OrderStatus() {
       <OrderStatusHeader
         showBackButton={true}
         onBackPress={handleBackPress}
-        onChatPress={handleChatPress}
+        onChatPress={showChatButton ? handleChatPress : null} // Conditionally render the chat button
       />
 
-      {renderStatusContent()}
+      <View style={styles.statusContainer}>
+        {renderStatusContent()}
 
-      {/* Modal for cancel order confirmation */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>ต้องการยกเลิกการสั่งซื้อ?</Text>
-            <Text style={styles.modalSubText}>
-              หากยกเลิกการสั่งซื้อ ข้อมูลที่สั่งไว้จะถูกล้าง
-            </Text>
-            <View style={styles.modalButtonContainer}>
-              <TouchableOpacity
-                style={styles.modalCancelButton}
-                onPress={() => {
-                  console.log("Order canceled");
-                  setModalVisible(false); // Close the modal
-                }}
-              >
-                <Text style={styles.modalCancelButtonText}>ยกเลิกรายการ</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.modalGoBackButton}
-                onPress={() => setModalVisible(false)} // Close the modal when "Go Back" is pressed
-              >
-                <Text style={styles.modalGoBackButtonText}>ย้อนกลับ</Text>
-              </TouchableOpacity>
+        {/* Modal for cancel order confirmation */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>ต้องการยกเลิกการสั่งซื้อ?</Text>
+              <Text style={styles.modalSubText}>
+                หากยกเลิกการสั่งซื้อ ข้อมูลที่สั่งไว้จะถูกล้าง
+              </Text>
+              <View style={styles.modalButtonContainer}>
+                <TouchableOpacity
+                  style={styles.modalCancelButton}
+                  onPress={() => {
+                    console.log("Order canceled");
+                    setModalVisible(false); // Close the modal
+                  }}
+                >
+                  <Text style={styles.modalCancelButtonText}>ยกเลิกรายการ</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.modalGoBackButton}
+                  onPress={() => setModalVisible(false)} // Close the modal when "Go Back" is pressed
+                >
+                  <Text style={styles.modalGoBackButtonText}>ย้อนกลับ</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
-      {/* Buttons to navigate through different statuses */}
-      <View style={styles.statusButtonContainer}>
-        <Button title="ค้นหา Walker" onPress={() => setStatus("searching")} />
-        <Button
-          title="กำลังรับอาหาร"
-          onPress={() => setStatus("picking_up_food")}
-        />
-        <Button title="กำลังจัดส่ง" onPress={() => setStatus("delivering")} />
-        <Button title="จัดส่งสำเร็จ" onPress={() => setStatus("completed")} />
+        {/* Buttons to navigate through different statuses */}
+        <View style={styles.statusButtonContainer}>
+          <Button title="ค้นหา Walker" onPress={() => setStatus("searching")} />
+          <Button title="กำลังรับอาหาร" onPress={() => setStatus("picking_up_food")}/>
+          <Button title="กำลังจัดส่ง" onPress={() => setStatus("delivering")} />
+          <Button title="จัดส่งสำเร็จ" onPress={() => setStatus("completed")} />
+        </View>
       </View>
     </View>
   );
@@ -280,9 +310,12 @@ export default function OrderStatus() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: "#fff",
     paddingTop: 50,
+  },
+  statusContainer: {
+    flex: 1,
+    padding: 20,
   },
   statusText: {
     fontSize: 20,
@@ -330,10 +363,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
   },
-  chatButtonText: {
+  ChatWalkerButton: {
+    backgroundColor: "#000",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  ChatWalkerButtonText: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: 600,
   },
   reviewButton: {
     backgroundColor: "#4CAF50",
@@ -422,5 +461,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  walkerInfoContainer: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  walkerImage: {
+    width: 40,  // Adjust the size of the image as needed
+    height: 40,
+    borderRadius: 20,  // Makes the image circular
+    marginRight: 10,   // Adds spacing between the image and text
+  },
+  walkerName: {
+    fontSize: 18,
+    color: "#4CAF50",
+    fontWeight: "bold",
+  },
 });
-
